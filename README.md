@@ -10,7 +10,7 @@ If you're running [Matterbridge](https://github.com/42wim/matterbridge), you mig
 
 ## Usage
 
-The easiest way to run wheaties-brain-java is using the `wheaties-brain-java` Docker image:
+The easiest way to run wheaties-brain-java is using the [wheaties-brain-java](https://hub.docker.com/repository/docker/blolol/wheaties-brain-java) Docker image:
 
 ```sh
 docker run -e IRC_NICK=Wheaties -e IRC_SERVER=irc.example.com wheaties-brain-java:latest
