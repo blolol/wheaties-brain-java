@@ -1,4 +1,4 @@
-package com.rosspaffett.wheaties;
+package com.blolol.wheaties;
 
 import org.slf4j.Logger;
 

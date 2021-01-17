@@ -10,10 +10,10 @@ If you're running [Matterbridge](https://github.com/42wim/matterbridge), you mig
 
 ## Usage
 
-The easiest way to run wheaties-brain-java is using the [wheaties-brain-java](https://hub.docker.com/repository/docker/blolol/wheaties-brain-java) Docker image:
+The easiest way to run wheaties-brain-java is using the [blolol/wheaties-brain-java](https://hub.docker.com/repository/docker/blolol/wheaties-brain-java) Docker image:
 
 ```sh
-docker run -e IRC_NICK=Wheaties -e IRC_SERVER=irc.example.com wheaties-brain-java:latest
+docker run -e IRC_NICK=Wheaties -e IRC_SERVER=irc.example.com blolol/wheaties-brain-java:latest
 ```
 
 wheaties-brain-java can be configured using the following environment variables.
@@ -33,7 +33,23 @@ wheaties-brain-java can be configured using the following environment variables.
 
 ## Building
 
-To build the project, run `./gradlew build`. To build a standalone "fat" JAR that includes all dependencies, use `./gradlew shadowJar`. To build a Docker image tagged with the project's current version, run `./gradlew docker`.
+To build the project, run `./gradlew build`. To build a standalone "fat" JAR that includes all dependencies, use `./gradlew shadowJar`.
+
+### Docker images
+
+Gradle tasks are included for easy Docker builds.
+
+```sh
+# Build a blolol/wheaties-brain-java:VERSION image
+./gradlew docker
+
+# Tag the blolol/wheaties-brain-java:VERSION image as blolol/wheaties-brain-java:latest
+./gradlew dockerTagLatest
+
+# Push both images to Docker Hub
+./gradlew dockerPush
+./gradlew dockerPushLatest
+```
 
 ## License
 

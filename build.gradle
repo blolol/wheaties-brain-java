@@ -4,7 +4,7 @@ plugins {
     id 'com.palantir.docker' version '0.25.0'
 }
 
-group 'com.rosspaffett'
+group 'com.blolol'
 version '0.0.1'
 
 repositories {
@@ -21,16 +21,17 @@ dependencies {
 jar {
     manifest {
         attributes([
-                'Implementation-Title': project.name,
-                'Implementation-Version': project.version,
-                'Implementation-Vendor': 'Ross Paffett',
-                'Main-Class': 'com.rosspaffett.wheaties.WheatiesMain'
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': 'Blolol',
+            'Main-Class': 'com.blolol.wheaties.WheatiesMain'
         ])
     }
 }
 
 docker {
-    name "${project.name}:${project.version}"
+    name "blolol/${project.name}:${project.version}"
+    tag 'latest', "blolol/${project.name}:latest"
     files tasks.shadowJar.outputs
     buildArgs([
         BUILD_VERSION: project.version

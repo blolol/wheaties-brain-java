@@ -1,4 +1,4 @@
-package com.rosspaffett.wheaties;
+package com.blolol.wheaties;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;

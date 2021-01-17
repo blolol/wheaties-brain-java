@@ -1,4 +1,4 @@
-package com.rosspaffett.wheaties;
+package com.blolol.wheaties;
 
 import org.jibble.jmegahal.JMegaHal;
 import org.pircbotx.Colors;
