@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.palantir.docker' version '0.25.0'
+}
+
+group 'com.rosspaffett'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.pircbotx:pircbotx:2.1'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-simple:1.7.30'
+    implementation files('libs/JMegaHal.jar')
+}
+
+jar {
+    manifest {
+        attributes([
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'Ross Paffett',
+                'Main-Class': 'com.rosspaffett.wheaties.WheatiesMain'
+        ])
+    }
+}
+
+docker {
+    name "${project.name}:${project.version}"
+    files tasks.shadowJar.outputs
+    buildArgs([
+        BUILD_VERSION: project.version
+    ] as Map<String, String>)
+}
