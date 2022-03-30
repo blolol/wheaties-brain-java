@@ -2,6 +2,7 @@ package com.blolol.wheaties;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.cap.SASLCapHandler;
 import org.pircbotx.exception.IrcException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +45,11 @@ public class WheatiesMain {
     private static void configureConnection(Configuration.Builder botConfig, WheatiesConfiguration wheatiesConfig) {
         botConfig.addServer(wheatiesConfig.server(), wheatiesConfig.port());
 
-        if (wheatiesConfig.hasPass())
+        if (wheatiesConfig.useSasl()) {
+            botConfig.addCapHandler(new SASLCapHandler(wheatiesConfig.user(), wheatiesConfig.pass()));
+        } else if (wheatiesConfig.hasPass()) {
             botConfig.setServerPassword(wheatiesConfig.pass());
+        }
 
         if (wheatiesConfig.useTls())
             botConfig.setSocketFactory(SSLSocketFactory.getDefault());

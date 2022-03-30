@@ -1,0 +1,9 @@
+services:
+  brain:
+    build:
+      context: .
+      args:
+        BUILD_VERSION: '${BUILD_VERSION:?requires build/libs/wheaties-brain-java-$BUILD_VERSION-all.jar}'
+    env_file: .env
+    environment:
+      IGNORE_PREFIXES: '${IGNORE_PREFIXES:-.!}'

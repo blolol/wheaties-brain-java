@@ -1,6 +1,7 @@
 package com.blolol.wheaties;
 
 import org.jibble.jmegahal.JMegaHal;
+import org.pircbotx.Channel;
 import org.pircbotx.Colors;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -16,7 +17,7 @@ public class ConversationListener extends ListenerAdapter {
     public static final String URL_PLACEHOLDER = "%wheaties-brain-java:url%";
     private static final String URL_PLACEHOLDER_PATTERN = Pattern.quote(URL_PLACEHOLDER);
 
-    private final JMegaHal brain;
+    private final Map<Channel, JMegaHal> brains = new HashMap<>();
     private final Pattern commandAssignmentPattern;
     private final Pattern nickPrefixPattern;
     private final Random random = new Random();
@@ -26,7 +27,6 @@ public class ConversationListener extends ListenerAdapter {
 
     public ConversationListener(WheatiesConfiguration wheatiesConfig) {
         this.wheatiesConfig = wheatiesConfig;
-        this.brain = new JMegaHal();
         this.wordChooser = new WordChooser(wheatiesConfig.nick());
 
         this.commandAssignmentPattern = Pattern.compile("\\A" + wheatiesConfig.nick() + ":\\s*\\S+\\s+is\\s+",
@@ -45,8 +45,9 @@ public class ConversationListener extends ListenerAdapter {
             learn(event);
     }
 
-    private synchronized JMegaHal brain() {
-        return brain;
+    private synchronized JMegaHal brain(Channel channel) {
+        brains.putIfAbsent(channel, new JMegaHal());
+        return brains.get(channel);
     }
 
     private String chooseSeedWord(String sentence) {
@@ -55,7 +56,7 @@ public class ConversationListener extends ListenerAdapter {
 
     private void learn(MessageEvent event) {
         String strippedMessage = stripMessage(event);
-        brain().add(strippedMessage);
+        brain(event.getChannel()).add(strippedMessage);
     }
 
     private Logger logger() {
@@ -81,13 +82,14 @@ public class ConversationListener extends ListenerAdapter {
     }
 
     private void respond(MessageEvent event) {
+        JMegaHal brain = brain(event.getChannel());
         String seedWord = chooseSeedWord(stripMessage(event));
         String response;
 
         if (seedWord != null)
-            response = brain().getSentence(seedWord);
+            response = brain.getSentence(seedWord);
         else
-            response = brain().getSentence();
+            response = brain.getSentence();
 
         if (response != null && response.length() > 0) {
             response = replaceUrls(response);

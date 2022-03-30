@@ -75,6 +75,8 @@ public class WheatiesConfiguration {
         return env.get("IRC_USER");
     }
 
+    public boolean useSasl() { return env.containsKey("IRC_SASL"); }
+
     public boolean useTls() {
         return env.containsKey("IRC_TLS");
     }

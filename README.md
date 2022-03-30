@@ -4,6 +4,8 @@ wheaties-brain-java combines [PircBotX](https://github.com/pircbotx/pircbotx) an
 
 The bot will respond when someone mentions its nick, and "learns" from all others. It attempts to identify "interesting" words in order to generate a relevant response, skipping common English words like articles and prepositions.
 
+Each IRC channel gets its own "brain", so that conversations from one channel don't inadvertently leak into another.
+
 wheaties-brain-java ignores messages that begin with any of the characters in `IGNORE_PREFIXES` (useful if you have other IRC bots whose interface involves a command prefix). It also ignores messages in the form "nick: x is y" to avoid conflicts with the [Wheaties programmable chat bot](https://github.com/blolol/wheaties).
 
 If you're running [Matterbridge](https://github.com/42wim/matterbridge), you might have an IRC bot in your channel that sends messages of the form "[source] &lt;nick&gt; message" or "&lt;nick&gt; message". wheaties-brain-java recognizes those, and only learns from the chat message itself.
@@ -26,10 +28,27 @@ wheaties-brain-java can be configured using the following environment variables.
 | `IRC_PASS` | Optional | IRC server password. |
 | `IRC_PORT` | **Required** | IRC server port. |
 | `IRC_REALNAME` | **Required** | IRC real name. |
+| `IRC_SASL` | Optional | Set to `true` to authenticate using SASL using `IRC_USER` and `IRC_PASS`. |
 | `IRC_SERVER` | **Required** | IRC server address. |
 | `IRC_TLS` | Optional | Set to `true` to connect using TLS. |
 | `IRC_USER` | **Required** | IRC server username. |
 | `MATTERBRIDGE_USER` | Optional | [Matterbridge](https://github.com/42wim/matterbridge) bot username. If this environment variable is set, wheaties-brain-java will strip any `[source] <nick>` prefix from the message before "learning" it. |
+
+### Running in development
+
+You can use Docker Compose to run wheaties-brain-java in your development environment. First, copy `.env.example` to `.env`, and customize it to suit your needs.
+
+```sh
+cp .env.example .env
+```
+
+The `BUILD_VERSION` environment variable is used in `Dockerfile` to copy the correct wheaties-brain-java jar from `build/libs` into the resulting Docker image. If `BUILD_VERSION` is set to "1.0.0", for example, then Docker will try to copy `build/libs/wheaties-brain-java-1.0.0-all.jar`. See ["Building"](#building) for instructions on how to build the requisite jar.
+
+Finally, use `docker-compose up` to build the Docker image and start the container.
+
+```sh
+docker-compose up
+```
 
 ## Building
 
@@ -50,6 +69,8 @@ Gradle tasks are included for easy Docker builds.
 ./gradlew dockerPush
 ./gradlew dockerPushLatest
 ```
+
+
 
 ## License
 
