@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class WheatiesMain {
     public static final String LOGGER_NAME = "wheaties-brain-java";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.0.1";
 
     public static void main(String[] args) throws IOException, IrcException {
         Map<String, String> env = System.getenv();
