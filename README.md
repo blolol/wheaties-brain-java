@@ -42,7 +42,7 @@ You can use Docker Compose to run wheaties-brain-java in your development enviro
 cp .env.example .env
 ```
 
-The `BUILD_VERSION` environment variable is used in `Dockerfile` to copy the correct wheaties-brain-java jar from `build/libs` into the resulting Docker image. If `BUILD_VERSION` is set to "1.0.0", for example, then Docker will try to copy `build/libs/wheaties-brain-java-1.0.0-all.jar`. See ["Building"](#building) for instructions on how to build the requisite jar.
+The `BUILD_VERSION` environment variable is used in `Dockerfile` to copy the correct wheaties-brain-java jar from `build/libs` into the resulting Docker image. If `BUILD_VERSION` is set to "1.0.0", for example, then Docker will try to copy `build/libs/wheaties-brain-java-1.0.0.jar`. See ["Building"](#building) for instructions on how to build the requisite jar.
 
 Finally, use `docker-compose up` to build the Docker image and start the container.
 
@@ -70,7 +70,16 @@ Gradle tasks are included for easy Docker builds.
 ./gradlew dockerPushLatest
 ```
 
+## Releasing
 
+To release a new version of wheaties-brain-java, change the version number in:
+
+* The `WheatiesMain.VERSION` constant in [WheatiesMain.java](src/main/java/com/blolol/wheaties/WheatiesMain.java)
+* The `version` project attribute in [build.gradle](build.gradle)
+
+Create a Git commit containing those two changes and a message like "wheaties-brain-java 1.0.0". Then, tag the commit with a name like `v1.0.0`.
+
+Pushing a Git tag named `v*` (such as `v1.0.0`) triggers [a GitHub Action](.github/workflows/release.yml) that builds the Docker image, tags it as `blolol/wheaties-brain-java:v1.0.0` and `blolol/wheaties-brain-java:latest`, and pushes it to [blolol/wheaties-brain-java](https://hub.docker.com/r/blolol/wheaties-brain-java) on Docker Hub.
 
 ## License
 

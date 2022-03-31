@@ -29,11 +29,20 @@ jar {
     }
 }
 
+shadowJar {
+    // Output to build/libs/wheaties-brain-java-${BUILD_VERSION}.jar
+    // https://imperceptiblethoughts.com/shadow/configuration/#configuring-output-name
+    archiveClassifier.set('')
+}
+
 docker {
     name "blolol/${project.name}:${project.version}"
     tag 'latest', "blolol/${project.name}:latest"
-    files tasks.shadowJar.outputs
     buildArgs([
         BUILD_VERSION: project.version
     ] as Map<String, String>)
+
+    // Copy files from build/libs into build/docker, which is used as the Docker build context
+    // https://github.com/palantir/gradle-docker#docker-plugin
+    copySpec.from('build/libs').into('build/libs')
 }
